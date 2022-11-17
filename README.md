@@ -1,1 +1,3 @@
-# week-4-challnege
+# week-4-challnege - Building a coding quiz!
+
+This challenge was a little harder for me, Im not sure if all the buttons work but I know that the main focus of the questions showing and changing once answered works, and if you get a question wrong it penalizes you. The quiz has a timer and a section to save your score after the quiz is complete. I had trouble on this one so I did need to refrence the completed code.
