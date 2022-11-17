@@ -1,50 +1,25 @@
-//This is the list of questions and answers for the quiz(I didnt have time to come up with my own)
-var questions = [
-    {
-      title: 'Commonly used data types DO NOT include:',
-      choices: ['strings', 'booleans', 'alerts', 'numbers'],
-      answer: 'alerts',
-    },
-    {
-      title: 'The condition in an if / else statement is enclosed within ____.',
-      choices: ['quotes', 'curly brackets', 'parentheses', 'square brackets'],
-      answer: 'parentheses',
-    },
-    {
-      title: 'Arrays in JavaScript can be used to store ____.',
-      choices: [
-        'numbers and strings',
-        'other arrays',
-        'booleans',
-        'all of the above',
-      ],
-      answer: 'all of the above',
-    },
-    {
-      title:
-        'String values must be enclosed within ____ when being assigned to variables.',
-      choices: ['commas', 'curly brackets', 'quotes', 'parentheses'],
-      answer: 'quotes',
-    },
-    {
-      title:
-        'A very useful tool used during development and debugging for printing content to the debugger is:',
-      choices: ['JavaScript', 'terminal / bash', 'for loops', 'console.log'],
-      answer: 'console.log',
-    },
-  ];
-
+var currentQuestionIndex = 0;
+var time = questions.length * 15;
+var timerId;
 
 var timerEl = document.getElementById('time');
 var startBtn = document.getElementById('start');
 var submit = document.getElementById('submit');
 var questionsEl = document.getElementById('questions');
 var choicesEl = document.getElementById('choices');
+var feedbackEl = document.getElementById('feedback');
 
 
 function startQuiz() {
+  var startScreenEl = document.getElementById('start-screen');
+  startScreenEl.removeAttribute('class');
+  
+    questionsEl.removeAttribute('class')
+    
     timerId = setInterval(clock, 1000);
     timerEl.textContent = time;
+
+    getQuestion();
 }
 
 function getQuestion() {
@@ -58,7 +33,7 @@ function getQuestion() {
         var choice = currentQuestion.choices[i];
         var choiceNode = document.createElement('button');
         choiceNode.setAttribute('class', 'choice');
-        choiceNode.setAttribute('valuye', choice);
+        choiceNode.setAttribute('value', choice);
 
         choiceNode.textContent = i + 1 + '. ' + choice;
 
@@ -66,7 +41,32 @@ function getQuestion() {
     }
 }
 
+function questionClick(event) {
+  var buttonEl = event.target;
 
+  if (!buttonEl.matches('.choices')) {
+    return;
+  }
+
+  if (buttonEl.value !== questions[currentQuestionIndex].answer) {
+    time -= 15;
+
+    if (time < 0) {
+      time = 0;
+    }
+
+    timerEl.textContent = time;
+
+    feedbackEl.textContent = 'Incorrect!';
+  } else {
+    feedbackEl.textContent = 'Correct!';
+  }
+
+  feedbackEl.setAttribute('class', 'feedback');
+  setTimeout(function () {
+    feedbackEl.setAttribute('class', 'feedback hide');
+  }, 1000);
+}
 
 
 
@@ -91,3 +91,7 @@ function clock() {
       quizEnd();
     }
   }
+
+
+startBtn.onClick = startQuiz;
+choicesEl.onClick = questionClick;
